@@ -3,6 +3,9 @@
   id: BaseItem
   abstract: true
   components:
+  # <Trauma>
+  - type: ViewconeOccludable # can't remember items that are out of view. ideally they would linger for like 5 seconds?
+  # </Trauma>
   - type: Item
     size: Small
   - type: Animateable

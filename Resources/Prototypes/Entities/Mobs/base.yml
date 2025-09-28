@@ -4,6 +4,20 @@
   save: true
   id: BaseControllable
   components:
+  # <Trauma>
+  - type: LanguageSpeaker
+  - type: Fart
+  - type: CollectiveMind
+  - type: SpecialAnimationViewer
+  - type: Penetratable
+    penetrateDamage: 15 # Kill million mices
+    damagePenalty: 0.05
+  - type: AnimatedEmotes
+  - type: Viewcone
+  - type: ViewconeOccludable # if it can move, you probably can't remember it forever?
+  - type: ViewconeFootstepsEffect # if you can hear it move you will see steps effects on screen
+    effect: ViewconeEffectFootstep
+  # </Trauma>
   - type: Sprite
     noRot: true
     drawdepth: Mobs
