@@ -1,0 +1,15 @@
+- type: entity
+  id: MaterialBox
+  name: material box
+  description: A large storage container for holding construction material.
+  parent: OreBox
+  components:
+  - type: Storage
+    grid:
+    - 0,0,19,9
+    maxItemSize: Normal
+    storageOpenSound: /Audio/Effects/closetopen.ogg
+    storageCloseSound: /Audio/Effects/closetclose.ogg
+    whitelist:
+      tags:
+      - ConstructionMaterial
