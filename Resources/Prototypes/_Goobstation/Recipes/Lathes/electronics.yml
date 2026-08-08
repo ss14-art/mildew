@@ -1,0 +1,31 @@
+- type: latheRecipe
+  parent: BaseGoldCircuitboardRecipe
+  id: RoboticArmCircuitboard
+  icon:
+    sprite: _Goobstation/Structures/Machines/robotic_arm.rsi
+    state: icon
+  result: RoboticArmCircuitboard
+
+- type: latheRecipe
+  parent: BaseCircuitboardRecipe
+  id: ConstructorCircuitboard
+  icon:
+    sprite: _Goobstation/Structures/Machines/constructor.rsi
+    state: icon
+  result: ConstructorCircuitboard
+
+- type: latheRecipe
+  parent: BaseCircuitboardRecipe
+  id: StorageBinCircuitboard
+  icon:
+    sprite: _Goobstation/Structures/Machines/storage_bin.rsi
+    state: icon
+  result: StorageBinCircuitboard
+
+- type: latheRecipe
+  parent: BaseCircuitboardRecipe
+  id: InteractorCircuitboard
+  icon:
+    sprite: _Goobstation/Structures/Machines/interactor.rsi
+    state: icon
+  result: InteractorCircuitboard

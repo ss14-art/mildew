@@ -1,0 +1,70 @@
+- type: entity
+  parent: BaseMachineCircuitboard
+  id: RoboticArmCircuitboard
+  name: robotic arm machine board
+  description: A machine printed circuit board for a robotic arm.
+  components:
+  - type: Sprite
+    state: engineering
+  - type: MachineBoard
+    prototype: RoboticArm
+    stackRequirements:
+      Manipulator: 4
+      Steel: 6
+      Cable: 5
+    tagRequirements:
+      BorgArm:
+        amount: 2
+        defaultPrototype: LeftArmBorg
+
+- type: entity
+  parent: BaseMachineCircuitboard
+  id: ConstructorCircuitboard
+  name: constructor machine board
+  description: A machine printed circuit board for a constructor.
+  components:
+  - type: Sprite
+    state: engineering
+  - type: MachineBoard
+    prototype: Constructor
+    stackRequirements:
+      Manipulator: 3
+      MatterBin: 2
+      Steel: 10
+      Cable: 5
+    tagRequirements:
+      BorgArm:
+        amount: 4
+        defaultPrototype: LeftArmBorg
+
+- type: entity
+  parent: BaseMachineCircuitboard
+  id: StorageBinCircuitboard
+  name: storage bin machine board
+  description: A machine printed circuit board for a storage bin.
+  components:
+  - type: MachineBoard
+    prototype: StorageBin
+    stackRequirements:
+      MatterBin: 2
+      Manipulator: 2
+      Steel: 1
+
+- type: entity
+  parent: BaseMachineCircuitboard
+  id: InteractorCircuitboard
+  name: interactor machine board
+  description: A machine printed circuit board for an interactor.
+  components:
+  - type: Sprite
+    state: engineering
+  - type: MachineBoard
+    prototype: Interactor
+    stackRequirements:
+      Manipulator: 4
+      Plastic: 4
+      Cable: 5
+    tagRequirements:
+      BorgArm:
+        amount: 1
+        defaultPrototype: LeftArmBorg

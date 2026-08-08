@@ -48,6 +48,11 @@
   - type: StaticPrice
     price: 360
   - type: ResearchClient
+  - type: AutomationSlots # Goobstation
+    slots:
+    - !type:AutomatedMaterialStorage
+      input: AutomationSlotMaterials
+      output: null
   - type: TechnologyDatabase
   - type: ApcPowerReceiver
     powerLoad: 150
@@ -278,6 +283,7 @@
     - CameraBoards
     - MechBoards
     - ShuttleBoards
+    - EngineeringBoardsGoob # Goobstation Factorio port
   - type: EmagLatheRecipes
     emagDynamicPacks:
     - SecurityBoards
