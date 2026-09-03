@@ -154,7 +154,12 @@ public sealed class FaxSystem : EntitySystem
 
     private void OnComponentInit(EntityUid uid, FaxMachineComponent component, ComponentInit args)
     {
-        _itemSlotsSystem.AddItemSlot(uid, PaperSlotId, component.PaperSlot);
+        // <Goobstation> - define the slot in ItemSlots instead of adding it
+        if (_itemSlotsSystem.TryGetSlot(uid, PaperSlotId, out var slot))
+            component.PaperSlot = slot;
+        else
+            _itemSlotsSystem.AddItemSlot(uid, PaperSlotId, component.PaperSlot);
+        // </Goobstation>
         UpdateAppearance(uid, component);
         Refresh(uid, component);
     }
@@ -489,6 +494,9 @@ public sealed class FaxSystem : EntitySystem
 
         UpdateUserInterface(uid, component);
 
+        if (!args.Actor.IsValid()) // Goobstation - no log for automation
+            return;
+
         _adminLogger.Add(LogType.Action,
             LogImpact.Low,
             $"{ToPrettyString(args.Actor):actor} " +
@@ -574,6 +582,7 @@ public sealed class FaxSystem : EntitySystem
 
         _deviceNetworkSystem.QueuePacket(uid, component.DestinationFaxAddress, payload);
 
+        if (!args.Actor.IsValid()) // Goobstation - no log for automation
         _adminLogger.Add(LogType.Action,
             LogImpact.Low,
             $"{ToPrettyString(args.Actor):actor} " +
