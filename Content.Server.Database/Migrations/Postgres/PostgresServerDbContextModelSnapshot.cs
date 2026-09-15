@@ -1046,6 +1046,25 @@ namespace Content.Server.Database.Migrations.Postgres
                         .HasColumnType("integer")
                         .HasColumnName("age");
 
+                    // WL-Changes-Start: Speech barks
+                    b.Property<float>("BarkMaxDelay")
+                        .HasColumnType("real")
+                        .HasColumnName("bark_max_delay");
+
+                    b.Property<float>("BarkMinDelay")
+                        .HasColumnType("real")
+                        .HasColumnName("bark_min_delay");
+
+                    b.Property<float>("BarkPitch")
+                        .HasColumnType("real")
+                        .HasColumnName("bark_pitch");
+
+                    b.Property<string>("BarkVoice")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("bark_voice");
+                    // WL-Changes-End
+
                     b.Property<string>("CharacterName")
                         .IsRequired()
                         .HasColumnType("text")

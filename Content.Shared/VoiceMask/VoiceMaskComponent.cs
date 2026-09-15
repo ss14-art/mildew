@@ -1,5 +1,6 @@
 using Content.Shared.Speech;
 using Robust.Shared.Prototypes;
+using Content.Shared._WL.Barks; // WL-Changes
 
 namespace Content.Shared.VoiceMask;
 
@@ -38,6 +39,16 @@ public sealed partial class VoiceMaskComponent : Component
     [DataField]
     public EntProtoId Action = "ActionChangeVoiceMask";
 
+    // WL-Changes-Start: Speech barks
+    [DataField]
+    [ViewVariables(VVAccess.ReadWrite)]
+    public ProtoId<BarkPrototype> BarkVoice = "Human1";
+
+    [DataField]
+    [ViewVariables(VVAccess.ReadWrite)]
+    public float BarkPitch = SpeechBarksComponent.DefaultPitch;
+    // WL-Changes-End
+
     /// <summary>
     ///     Reference to the action.
     /// </summary>
@@ -62,4 +73,3 @@ public sealed partial class VoiceMaskComponent : Component
     [DataField]
     public bool ChangeIDName = false;
 }
-

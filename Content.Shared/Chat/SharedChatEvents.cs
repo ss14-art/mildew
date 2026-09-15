@@ -81,6 +81,14 @@ public sealed class EntitySpokeEvent : EntityEventArgs
     public readonly string Message;
     public readonly string? ObfuscatedMessage; // not null if this was a whisper
 
+    // WL-Changes-start: Speech barks
+    /// <summary>
+    /// Whether the message originally had a radio channel. Unlike <see cref="Channel"/>,
+    /// this is not cleared after a radio transmitter handles the message.
+    /// </summary>
+    public readonly bool WasRadio;
+    // WL-Changes-end
+
     /// <summary>
     /// If the entity was trying to speak into a radio, this was the channel they were trying to access. If a radio
     /// message gets sent on this channel, this should be set to null to prevent duplicate messages.
@@ -92,6 +100,7 @@ public sealed class EntitySpokeEvent : EntityEventArgs
         Source = source;
         Message = message;
         Channel = channel;
+        WasRadio = channel != null; // WL-Changes: Speech barks
         ObfuscatedMessage = obfuscatedMessage;
     }
 }

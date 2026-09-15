@@ -1,3 +1,4 @@
+using Content.Shared._WL.Barks; // WL-Changes
 using Content.Shared.Examine;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.IdentityManagement;
@@ -29,6 +30,16 @@ public sealed class HumanoidProfileSystem : EntitySystem
         ent.Comp.Age = profile.Age;
         ent.Comp.Species = profile.Species;
         ent.Comp.Sex = profile.Sex;
+        // WL-Changes-Start: Speech barks
+        if (TryComp<SpeechBarksComponent>(ent, out var barks))
+        {
+            barks.Voice = profile.BarkVoice;
+            barks.Pitch = profile.BarkPitch;
+            barks.MinDelay = profile.BarkMinDelay;
+            barks.MaxDelay = profile.BarkMaxDelay;
+            Dirty(ent.Owner, barks);
+        }
+        // WL-Changes-End
         Dirty(ent);
 
         var sexChanged = new SexChangedEvent(ent.Comp.Sex, profile.Sex);
@@ -62,18 +73,18 @@ public sealed class HumanoidProfileSystem : EntitySystem
     }
 
     // Art-start
-	public string GetSpeciesRepresentation(EntityUid uid)  
-    {  
-        if (TryComp<HumanoidProfileComponent>(uid, out var profile))  
-            return GetSpeciesRepresentation(profile.Species);  
-        return Loc.GetString("humanoid-appearance-component-unknown-species");  
-    }  
-    
-    public Gender GetGender(EntityUid uid)  
-    {  
-        return TryComp<HumanoidProfileComponent>(uid, out var profile)  
-            ? profile.Gender  
-            : Gender.Epicene;  
+	public string GetSpeciesRepresentation(EntityUid uid)
+    {
+        if (TryComp<HumanoidProfileComponent>(uid, out var profile))
+            return GetSpeciesRepresentation(profile.Species);
+        return Loc.GetString("humanoid-appearance-component-unknown-species");
+    }
+
+    public Gender GetGender(EntityUid uid)
+    {
+        return TryComp<HumanoidProfileComponent>(uid, out var profile)
+            ? profile.Gender
+            : Gender.Epicene;
     }
     // Art-end
 

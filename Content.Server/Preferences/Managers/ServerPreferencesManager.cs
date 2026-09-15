@@ -212,7 +212,15 @@ namespace Content.Server.Preferences.Managers
                 antags.ToHashSet(),
                 traits.ToHashSet(),
                 loadouts
-            );
+            )
+            // WL-Changes-Start: Speech barks
+            {
+                BarkVoice = profile.BarkVoice,
+                BarkPitch = profile.BarkPitch,
+                BarkMinDelay = profile.BarkMinDelay,
+                BarkMaxDelay = profile.BarkMaxDelay,
+            };
+            // WL-Changes-End
         }
 
         private async void HandleSelectCharacterMessage(MsgSelectCharacter message)

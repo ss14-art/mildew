@@ -187,6 +187,7 @@ public sealed partial class HumanoidProfileEditor
         // In case there's species restrictions for loadouts
         RefreshLoadouts();
         UpdateSexControls(); // update sex for new species
+        UpdateTTSVoicesControls(); // Corvax-TTS
         UpdateSpeciesGuidebookIcon();
         ReloadPreview();
     }
@@ -215,6 +216,7 @@ public sealed partial class HumanoidProfileEditor
         }
 
         UpdateGenderControls();
+        UpdateTTSVoicesControls(); // Corvax-TTS
         _markingsModel.SetOrganSexes(newSex);
         ReloadPreview();
     }

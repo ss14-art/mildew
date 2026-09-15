@@ -408,6 +408,8 @@ namespace Content.Client.Lobby.UI
 
             RefreshFlavorText();
 
+            RefreshVoiceTab(); // Corvax-TTS
+
             #region Dummy
 
             SpriteRotateLeft.OnPressed += _ =>
@@ -598,7 +600,7 @@ namespace Content.Client.Lobby.UI
                 var parent = Parent;
                 while (parent != null && parent is not CharacterSetupGui)
                     parent = parent.Parent;
-                
+
                 if (parent is CharacterSetupGui setupGui)
                 {
                     // Use cached equipment immediately if available
@@ -608,7 +610,7 @@ namespace Content.Client.Lobby.UI
                 {
                     _persistentEquipment = null;
                 }
-                
+
                 // Always request fresh data from server
                 _preferencesManager.RequestPersistentAppearance(slot.Value);
             }

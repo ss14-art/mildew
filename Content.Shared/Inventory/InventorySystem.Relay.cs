@@ -5,6 +5,7 @@ using Content.Shared.Chat;
 using Content.Shared.Chemistry;
 using Content.Shared.Chemistry.Events;
 using Content.Shared.Climbing.Events;
+using Content.Shared._WL.Barks; // WL-Changes
 using Content.Shared.Contraband;
 using Content.Shared.Damage.Events;
 using Content.Shared.Damage.Systems;
@@ -63,6 +64,7 @@ public partial class InventorySystem
         SubscribeLocalEvent<InventoryComponent, BeforeEmoteEvent>(RelayInventoryEvent);
         SubscribeLocalEvent<InventoryComponent, StoodEvent>(RelayInventoryEvent);
         SubscribeLocalEvent<InventoryComponent, DownedEvent>(RelayInventoryEvent);
+        SubscribeLocalEvent<InventoryComponent, TransformSpeakerBarkEvent>(RelayInventoryEvent); // WL-Changes
 
         // by-ref events
         SubscribeLocalEvent<InventoryComponent, RefreshFrictionModifiersEvent>(RefRelayInventoryEvent);

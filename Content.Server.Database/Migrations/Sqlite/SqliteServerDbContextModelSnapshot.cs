@@ -983,6 +983,25 @@ namespace Content.Server.Database.Migrations.Sqlite
                         .HasColumnType("INTEGER")
                         .HasColumnName("age");
 
+                    // WL-Changes-Start: Speech barks
+                    b.Property<float>("BarkMaxDelay")
+                        .HasColumnType("REAL")
+                        .HasColumnName("bark_max_delay");
+
+                    b.Property<float>("BarkMinDelay")
+                        .HasColumnType("REAL")
+                        .HasColumnName("bark_min_delay");
+
+                    b.Property<float>("BarkPitch")
+                        .HasColumnType("REAL")
+                        .HasColumnName("bark_pitch");
+
+                    b.Property<string>("BarkVoice")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("bark_voice");
+                    // WL-Changes-End
+
                     b.Property<string>("CharacterName")
                         .IsRequired()
                         .HasColumnType("TEXT")
