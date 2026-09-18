@@ -1,4 +1,9 @@
+// Art: Большая часть была переписана, воооот
+
 using Robust.Shared.Network;
+using Robust.Shared.Physics.Components;
+using Robust.Shared.Physics.Systems;
+using Robust.Shared.Physics;
 
 namespace Content.Shared.EntityEffects.Effects.EntitySpawning;
 
@@ -10,6 +15,7 @@ namespace Content.Shared.EntityEffects.Effects.EntitySpawning;
 public sealed partial class SpawnEntityEntityEffectSystem : EntityEffectSystem<TransformComponent, SpawnEntity>
 {
     [Dependency] private readonly INetManager _net = default!;
+    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
 
     protected override void Effect(Entity<TransformComponent> entity, ref EntityEffectEvent<SpawnEntity> args)
     {
@@ -20,16 +26,29 @@ public sealed partial class SpawnEntityEntityEffectSystem : EntityEffectSystem<T
         {
             for (var i = 0; i < quantity; i++)
             {
-                PredictedSpawnNextToOrDrop(proto, entity, entity.Comp);
+                var spawned = PredictedSpawnNextToOrDrop(proto, entity, entity.Comp);
+                WakeSpawnedPhysics(spawned);
             }
         }
         else if (_net.IsServer)
         {
             for (var i = 0; i < quantity; i++)
             {
-                SpawnNextToOrDrop(proto, entity, entity.Comp);
+                var spawned = SpawnNextToOrDrop(proto, entity, entity.Comp);
+                WakeSpawnedPhysics(spawned);
             }
         }
+    }
+
+    private void WakeSpawnedPhysics(EntityUid uid)
+    {
+        if (!TryComp<PhysicsComponent>(uid, out var physics))
+            return;
+
+        if (physics.BodyType == BodyType.Static)
+            return;
+
+        _physics.WakeBody(uid, body: physics);
     }
 }
 

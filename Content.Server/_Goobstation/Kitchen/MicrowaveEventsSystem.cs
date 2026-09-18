@@ -18,6 +18,9 @@ public sealed class MicrowaveEventsSystem : EntitySystem
 
     private void OnRemoveAttempt(Entity<ActiveMicrowaveComponent> ent, ref ContainerIsRemovingAttemptEvent args)
     {
-        args.Cancel();
+		// Art-start
+        if (ent.Comp.CookTimeRemaining > 0)
+            args.Cancel();
+		// Art-end
     }
 }
