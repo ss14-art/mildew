@@ -15,14 +15,26 @@ public sealed class VoiceMaskBuiState : BoundUserInterfaceState
     public readonly string? Verb;
     public readonly bool Active;
     public readonly bool AccentHide;
+    // WL-Changes-Start: Speech barks
+    public readonly string BarkVoice;
+    public readonly float BarkPitch;
 
-    public VoiceMaskBuiState(string name, string? verb, bool active, bool accentHide)
+    public VoiceMaskBuiState(
+        string name,
+        string? verb,
+        bool active,
+        bool accentHide,
+        string barkVoice,
+        float barkPitch)
     {
         Name = name;
         Verb = verb;
         Active = active;
         AccentHide = accentHide;
+        BarkVoice = barkVoice;
+        BarkPitch = barkPitch;
     }
+    // WL-Changes-End
 }
 
 [Serializable, NetSerializable]

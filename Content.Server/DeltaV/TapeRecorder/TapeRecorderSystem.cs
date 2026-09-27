@@ -5,6 +5,7 @@ using Content.Shared.Chat;
 using Content.Shared.DeltaV.TapeRecorder;
 using Content.Shared.DeltaV.TapeRecorder.Components;
 using Content.Shared.DeltaV.TapeRecorder.Systems;
+using Content.Shared._WL.Barks; // WL-Changes
 using Content.Shared.Paper;
 using Content.Shared.Speech;
 using Robust.Shared.Prototypes;
@@ -45,6 +46,27 @@ public sealed class TapeRecorderSystem : SharedTapeRecorderSystem
             voice.NameOverride = message.Name ?? ent.Comp.DefaultName;
             var verb = message.Verb ?? SharedChatSystem.DefaultSpeechVerb;
             speech.SpeechVerb = _proto.Index<SpeechVerbPrototype>(verb);
+
+            // WL-Changes-Start: Speech barks
+            if (!string.IsNullOrEmpty(message.BarkVoice) &&
+                _proto.HasIndex<BarkPrototype>(message.BarkVoice))
+            {
+                EnsureComp<SpeechBarksComponent>(ent);
+                voice.BarkVoiceOverride = message.BarkVoice;
+                voice.BarkPitchOverride = message.BarkPitch;
+                voice.BarkMinDelayOverride = message.BarkMinDelay;
+                voice.BarkMaxDelayOverride = message.BarkMaxDelay;
+            }
+            else
+            {
+                RemComp<SpeechBarksComponent>(ent);
+                voice.BarkVoiceOverride = null;
+                voice.BarkPitchOverride = null;
+                voice.BarkMinDelayOverride = null;
+                voice.BarkMaxDelayOverride = null;
+            }
+            // WL-Changes-End
+
             //Play the message
             _chat.TrySendInGameICMessage(ent, message.Message, InGameICChatType.Speak, false);
         }
@@ -73,7 +95,38 @@ public sealed class TapeRecorderSystem : SharedTapeRecorderSystem
         //Add a new entry to the tape
         var verb = _chat.GetSpeechVerb(args.Source, args.Message);
         var name = nameEv.VoiceName;
-        cassette.Comp.Buffer.Add(new TapeCassetteRecordedMessage(cassette.Comp.CurrentPosition, name, verb, args.Message));
+
+        // WL-Changes-Start
+        var barkVoice = string.Empty;
+        var barkPitch = SpeechBarksComponent.DefaultPitch;
+        var barkMinDelay = SpeechBarksComponent.DefaultMinDelay;
+        var barkMaxDelay = SpeechBarksComponent.DefaultMaxDelay;
+
+        if (TryComp<SpeechBarksComponent>(args.Source, out var barkComp))
+        {
+            var barkTransform = new TransformSpeakerBarkEvent(
+                args.Source,
+                barkComp.Voice,
+                barkComp.Pitch,
+                barkComp.MinDelay,
+                barkComp.MaxDelay);
+            RaiseLocalEvent(args.Source, barkTransform);
+            barkVoice = barkTransform.Voice;
+            barkPitch = barkTransform.Pitch;
+            barkMinDelay = barkTransform.MinDelay;
+            barkMaxDelay = barkTransform.MaxDelay;
+        }
+        // WL-Changes: added speech bark support
+        cassette.Comp.Buffer.Add(new TapeCassetteRecordedMessage(
+            cassette.Comp.CurrentPosition,
+            name,
+            verb,
+            args.Message,
+            barkVoice,
+            barkPitch,
+            barkMinDelay,
+            barkMaxDelay));
+        // WL-Changes-end
     }
 
     private void OnPrintMessage(Entity<TapeRecorderComponent> ent, ref PrintTapeRecorderMessage args)

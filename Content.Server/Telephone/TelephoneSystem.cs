@@ -6,6 +6,7 @@ using Content.Server.Interaction;
 using Content.Server.Power.EntitySystems;
 using Content.Shared._RMC14.Chat; // Persistence: Chat stacking from RMC14 - pull/7587
 using Content.Shared.Chat;
+using Content.Shared._WL.Barks; // WL-Changes
 using Content.Shared.Database;
 using Content.Shared.Labels.Components;
 using Content.Shared.Mind.Components;
@@ -117,6 +118,30 @@ public sealed class TelephoneSystem : SharedTelephoneSystem
 
         var range = args.TelephoneSource.Comp.LinkedTelephones.Count > 1 ? ChatTransmitRange.HideChat : ChatTransmitRange.GhostRangeLimit;
         var volume = entity.Comp.SpeakerVolume == TelephoneVolume.Speak ? InGameICChatType.Speak : InGameICChatType.Whisper;
+        // WL-Changes-Start: Speech barks
+        if (TryComp<SpeechBarksComponent>(args.MessageSource, out var barkSpeaker))
+        {
+            var barkTransform = new TransformSpeakerBarkEvent(
+                args.MessageSource,
+                barkSpeaker.Voice,
+                barkSpeaker.Pitch,
+                barkSpeaker.MinDelay,
+                barkSpeaker.MaxDelay,
+                barkSpeaker.PlayOnRadio);
+            RaiseLocalEvent(args.MessageSource, barkTransform);
+
+            var barkTelephone = EnsureComp<SpeechBarksComponent>(speaker);
+            barkTelephone.Voice = barkTransform.Voice;
+            barkTelephone.Pitch = barkTransform.Pitch;
+            barkTelephone.MinDelay = barkTransform.MinDelay;
+            barkTelephone.MaxDelay = barkTransform.MaxDelay;
+            barkTelephone.PlayOnRadio = barkTransform.PlayOnRadio;
+        }
+        else
+        {
+            RemComp<SpeechBarksComponent>(speaker);
+        }
+        // WL-Changes-End
 
         _chat.TrySendInGameICMessage(speaker, args.Message, volume, range, nameOverride: name, checkRadioPrefix: false);
     }

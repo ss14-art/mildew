@@ -14,5 +14,15 @@
         </BoxContainer>
         <Button Name="ToggleAccentButton" Text="{Loc 'voice-mask-name-change-accent-toggle'}" HorizontalExpand="True" ToggleMode="True" Margin="5"/>
         <Button Name="ToggleButton" Text="{Loc 'voice-mask-name-change-toggle'}" HorizontalExpand="True" ToggleMode="True" Margin="5"/>
+        <!-- WL-Changes-Start: Speech barks -->
+        <BoxContainer Orientation="Horizontal" Margin="5">
+            <Label Text="{Loc 'voice-mask-bark-change-info'}" />
+            <OptionButton Name="BarkSelector" HorizontalExpand="True" />
+        </BoxContainer>
+        <BoxContainer Orientation="Horizontal" Margin="5">
+            <Label Text="{Loc 'voice-mask-bark-pitch-change-info'}" />
+            <LineEdit Name="BarkPitchSelector" HorizontalExpand="True" />
+        </BoxContainer>
+        <!-- WL-Changes-End -->
     </BoxContainer>
 </controls:FancyWindow>
