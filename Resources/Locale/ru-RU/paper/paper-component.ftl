@@ -26,7 +26,4 @@ paper-signature-sign-button = Подписать
 paper-form-dialog-ok = ОК
 paper-form-dialog-cancel = Отмена
 paper-signature-unknown = Неизвестно
-paper-date-insert-button = Дата
-paper-species-insert-button = Раса
-paper-gender-insert-button = Гендер
 # 

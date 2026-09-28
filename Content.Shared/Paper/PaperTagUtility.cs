@@ -44,10 +44,5 @@ public static class PaperTagUtility
     public static string CleanUnfilledTags(string text) =>
         text.Replace("[form]", string.Empty)
             .Replace("[signature]", string.Empty)
-            .Replace("[check]", "☐")
-			// Art-start
-	        .Replace("[date]", string.Empty)  
-            .Replace("[species]", string.Empty)  
-            .Replace("[gender]", string.Empty);
-			// Art-end
+            .Replace("[check]", "☐");
 }

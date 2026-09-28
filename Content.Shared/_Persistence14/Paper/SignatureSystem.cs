@@ -7,9 +7,6 @@ using Content.Shared.Crayon;
 using Content.Shared.Database;
 using Content.Shared.Paper;
 using Content.Shared.Verbs;
-using Content.Shared.Humanoid; // Art-edit
-using Content.Shared.Humanoid.Prototypes; // Art-edit
-using Robust.Shared.Prototypes; // Art-edit
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Serialization;
@@ -23,18 +20,12 @@ public sealed partial class SignatureSystem : EntitySystem
     [Dependency] private SharedAppearanceSystem _appearance = default!;
     [Dependency] private PaperSystem _paper = default!;
     [Dependency] private ISharedAdminLogManager _adminLogger = default!;
-	[Dependency] private readonly IPrototypeManager _protoMan = default!; // Art-edit
-	[Dependency] private readonly HumanoidProfileSystem _humanoidProfile = default!; // Art-edit
 
     public override void Initialize()
     {
         SubscribeLocalEvent<PaperComponent, GetVerbsEvent<AlternativeVerb>>(OnGetVerbs);
         SubscribeLocalEvent<PaperComponent, PaperSignatureRequestMessage>(OnSignMessageReceived);
         SubscribeLocalEvent<PaperComponent, PaperSignatureFieldRequestMessage>(OnSignFieldMessageReceived);
-		// Art-start
-		SubscribeLocalEvent<PaperComponent, PaperSpeciesRequestMessage>(OnSpeciesMessageReceived);  
-		SubscribeLocalEvent<PaperComponent, PaperGenderRequestMessage>(OnGenderMessageReceived);
-		// Art-end
     }
 
     private void OnGetVerbs(EntityUid uid, PaperComponent component, ref GetVerbsEvent<AlternativeVerb> args)
@@ -206,22 +197,6 @@ public sealed partial class SignatureSystem : EntitySystem
 
         return fields.Order(StringComparer.OrdinalIgnoreCase).ToList();
     }
-
-	// Art-start
-    private void OnSpeciesMessageReceived(EntityUid uid, PaperComponent comp, ref PaperSpeciesRequestMessage args)  
-    {  
-        var speciesStr = _humanoidProfile.GetSpeciesRepresentation(args.Actor);  
-        var newText = PaperTagUtility.ReplaceNthTag(comp.Content, "[species]", args.Index, speciesStr);  
-        _paper.SetContent((uid, comp), newText);  
-    }  
-    
-    private void OnGenderMessageReceived(EntityUid uid, PaperComponent comp, ref PaperGenderRequestMessage args)  
-    {  
-        var genderStr = _humanoidProfile.GetGender(args.Actor).ToString();  
-        var newText = PaperTagUtility.ReplaceNthTag(comp.Content, "[gender]", args.Index, genderStr);  
-        _paper.SetContent((uid, comp), newText);  
-    }
-	// Art-End
 }
 
 [Serializable, NetSerializable]
@@ -234,16 +209,4 @@ public sealed class PaperSignatureRequestMessage(int signatureIndex) : BoundUser
 public sealed class PaperSignatureFieldRequestMessage(string field) : BoundUserInterfaceMessage
 {
     public readonly string SignatureField = field;
-}
-
-[Serializable, NetSerializable]
-public sealed class PaperSpeciesRequestMessage(int index) : BoundUserInterfaceMessage
-{
-    public readonly int Index = index;
-}
-
-[Serializable, NetSerializable]
-public sealed class PaperGenderRequestMessage(int index) : BoundUserInterfaceMessage
-{
-    public readonly int Index = index;
 }
