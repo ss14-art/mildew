@@ -12,6 +12,7 @@ using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Input;
 using Robust.Shared.Utility;
 using System.Numerics;
+using Content.Client._Art.RichText; // Art-edit
 
 namespace Content.Client.Paper.UI
 {
@@ -52,7 +53,12 @@ namespace Content.Client.Paper.UI
             typeof(MonoTag),
             typeof(FormTagHandler),
             typeof(SignatureTagHandler),
-            typeof(CheckTagHandler)
+            typeof(CheckTagHandler),
+			// Art-start
+			typeof(SmallTag),
+			typeof(UnderlineTag),
+			typeof(StrikethroughTag),
+			// Art-end
         ];
 
         public event Action<string>? OnSaved;
