@@ -27,3 +27,9 @@ paper-form-dialog-ok = ОК
 paper-form-dialog-cancel = Отмена
 paper-signature-unknown = Неизвестно
 # 
+
+paper-ui-insert-image-button = Вставить картинку
+paper-ui-insert-image-tooltip = Преобразует PNG, WebP, JPEG или GIF в компактный рисунок на бумаге.
+paper-ui-insert-image-failed = Не удалось прочитать изображение.
+paper-ui-insert-image-too-large = Файл слишком большой.
+paper-ui-insert-image-no-space = На странице не хватает места.
