@@ -27,7 +27,7 @@ public sealed class PaperPixelArtImporterTests
         }
 
         using var stream = SavePng(image);
-        Assert.That(PaperPixelArtImporter.TryImport(stream, 6000, out var markup, out var error), Is.True);
+        Assert.That(PaperPixelArtImporter.TryImport(stream, 6000, 50, out var markup, out var error), Is.True);
         Assert.That(error, Is.EqualTo(PaperPixelArtImportError.None));
         Assert.That(markup, Does.StartWith("[px "));
 
@@ -38,6 +38,33 @@ public sealed class PaperPixelArtImporterTests
         Assert.That(art.Height, Is.EqualTo(2));
         Assert.That(art.Pixels[0], Is.EqualTo(Robust.Shared.Maths.Color.FromHex("#ff0000")));
         Assert.That(art.Pixels[2], Is.EqualTo(Robust.Shared.Maths.Color.FromHex("#00ff00")));
+    }
+
+    [Test]
+    public void WritesFillPercentIntoPxTag()
+    {
+        using var image = new Image<Rgba32>(4, 2, new Rgba32(255, 0, 0));
+
+        Assert.That(PaperPixelArtImporter.TryEncode(image, 6000, 75, out var markup), Is.True);
+        Assert.That(markup, Does.Contain(" f=75"));
+        Assert.That(markup, Does.Not.Contain(" s="), "f взаимоисключает s");
+
+        Assert.That(FormattedMessage.TryParse(markup!, out var nodes, out var parseError), Is.True, parseError);
+        var px = nodes!.Find(n => n.Name == PaperPixelArtCodec.TagName);
+        Assert.That(PaperPixelArtCodec.TryDecode(px!, out var art), Is.True);
+        Assert.That(art.FillPercent, Is.EqualTo(75));
+    }
+
+    [Test]
+    public void ClampsFillPercent()
+    {
+        using var image = new Image<Rgba32>(4, 2, new Rgba32(255, 0, 0));
+
+        Assert.That(PaperPixelArtImporter.TryEncode(image, 6000, 3, out var markup), Is.True);
+        Assert.That(markup, Does.Contain(" f=10"));
+
+        Assert.That(PaperPixelArtImporter.TryEncode(image, 6000, 250, out markup), Is.True);
+        Assert.That(markup, Does.Contain(" f=100"));
     }
 
     [Test]
@@ -52,7 +79,7 @@ public sealed class PaperPixelArtImporterTests
             }
         }
 
-        Assert.That(PaperPixelArtImporter.TryEncode(image, 6000, out var markup), Is.True);
+        Assert.That(PaperPixelArtImporter.TryEncode(image, 6000, 50, out var markup), Is.True);
         Assert.That(markup!.Length, Is.LessThanOrEqualTo(6000));
         Assert.That(FormattedMessage.TryParse(markup, out var nodes, out var parseError), Is.True, parseError);
         var px = nodes!.Find(n => n.Name == PaperPixelArtCodec.TagName);
@@ -71,7 +98,7 @@ public sealed class PaperPixelArtImporterTests
                 image[x, y] = new Rgba32(20, 20, 20);
         }
 
-        Assert.That(PaperPixelArtImporter.TryEncode(image, 6000, out var markup), Is.True);
+        Assert.That(PaperPixelArtImporter.TryEncode(image, 6000, 50, out var markup), Is.True);
         Assert.That(FormattedMessage.TryParse(markup!, out var nodes, out var parseError), Is.True, parseError);
         var px = nodes!.Find(n => n.Name == PaperPixelArtCodec.TagName);
         Assert.That(PaperPixelArtCodec.TryDecode(px!, out var art), Is.True);
@@ -95,7 +122,7 @@ public sealed class PaperPixelArtImporterTests
         image[0, 1] = new Rgba32(0, 0, 255);
         image[1, 1] = new Rgba32(0, 0, 0, 0);
 
-        Assert.That(PaperPixelArtImporter.TryEncode(image, 6000, out var markup), Is.True);
+        Assert.That(PaperPixelArtImporter.TryEncode(image, 6000, 50, out var markup), Is.True);
         Assert.That(FormattedMessage.TryParse(markup!, out var nodes, out var parseError), Is.True, parseError);
         var px = nodes!.Find(n => n.Name == PaperPixelArtCodec.TagName);
         Assert.That(PaperPixelArtCodec.TryDecode(px!, out var art), Is.True);
@@ -107,7 +134,7 @@ public sealed class PaperPixelArtImporterTests
     public void FailsWhenThereIsNoSpace()
     {
         using var image = new Image<Rgba32>(8, 8, new Rgba32(255, 0, 0));
-        Assert.That(PaperPixelArtImporter.TryEncode(image, 10, out _), Is.False);
+        Assert.That(PaperPixelArtImporter.TryEncode(image, 10, 50, out _), Is.False);
     }
 
     [Test]
@@ -118,7 +145,7 @@ public sealed class PaperPixelArtImporterTests
         image.SaveAsWebp(stream);
         stream.Position = 0;
 
-        Assert.That(PaperPixelArtImporter.TryImport(stream, 6000, out var markup, out var error), Is.True);
+        Assert.That(PaperPixelArtImporter.TryImport(stream, 6000, 50, out var markup, out var error), Is.True);
         Assert.That(error, Is.EqualTo(PaperPixelArtImportError.None));
         Assert.That(markup, Does.StartWith("[px "));
     }

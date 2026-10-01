@@ -26,9 +26,17 @@ public static class PaperPixelArtView
         stream.Position = 0;
         var texture = Texture.LoadFromPNGStream(stream, "paper-px");
 
-        var scale = (float) art.Scale;
-        if (maxWidth > 0 && art.Width * scale > maxWidth)
-            scale = maxWidth / art.Width;
+        float scale;
+        if (art.FillPercent is { } fill && maxWidth > 0)
+        {
+            scale = maxWidth * Math.Clamp(fill, 10, 100) / 100f / art.Width;
+        }
+        else
+        {
+            scale = art.Scale;
+            if (maxWidth > 0 && art.Width * scale > maxWidth)
+                scale = maxWidth / art.Width;
+        }
 
         return new TextureRect
         {

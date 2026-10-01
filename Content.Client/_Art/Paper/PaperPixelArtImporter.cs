@@ -31,6 +31,7 @@ public static class PaperPixelArtImporter
     public static bool TryImport(
         Stream stream,
         int maxChars,
+        int fillPercent,
         [NotNullWhen(true)] out string? markup,
         out PaperPixelArtImportError error)
     {
@@ -84,7 +85,7 @@ public static class PaperPixelArtImporter
                 return false;
             }
 
-            if (!TryEncode(image, maxChars, out markup))
+            if (!TryEncode(image, maxChars, fillPercent, out markup))
             {
                 error = PaperPixelArtImportError.NoSpace;
                 return false;
@@ -94,7 +95,7 @@ public static class PaperPixelArtImporter
         return true;
     }
 
-    public static bool TryEncode(Image<Rgba32> source, int maxChars, [NotNullWhen(true)] out string? markup)
+    public static bool TryEncode(Image<Rgba32> source, int maxChars, int fillPercent, [NotNullWhen(true)] out string? markup)
     {
         markup = null;
         if (maxChars <= 0 || source.Width <= 0 || source.Height <= 0)
@@ -112,7 +113,7 @@ public static class PaperPixelArtImporter
         {
             var mid = (lo + hi) / 2;
             FitSize(source.Width, source.Height, mid, out var width, out var height);
-            var candidate = EncodeResampled(source, width, height);
+            var candidate = EncodeResampled(source, width, height, fillPercent);
             if (candidate.Length <= maxChars)
             {
                 best = candidate;
@@ -128,13 +129,13 @@ public static class PaperPixelArtImporter
         return best != null;
     }
 
-    private static string EncodeResampled(Image<Rgba32> source, int width, int height)
+    private static string EncodeResampled(Image<Rgba32> source, int width, int height, int fillPercent)
     {
         width = Math.Clamp(width, 1, PaperPixelArtCodec.MaxWidth);
         height = Math.Clamp(height, 1, PaperPixelArtCodec.MaxHeight);
         var pixels = Resample(source, width, height);
         Quantize(pixels, MaxPaletteColors);
-        return PaperPixelArtCodec.Encode(width, pixels, PickScale(width, height));
+        return PaperPixelArtCodec.Encode(width, pixels, fillPercent: Math.Clamp(fillPercent, 10, 100));
     }
 
     private static Color[] Resample(Image<Rgba32> source, int width, int height)
@@ -389,18 +390,6 @@ public static class PaperPixelArtImporter
         }
 
         return gray * 10 >= pixels.Length * 9;
-    }
-
-    private static int PickScale(int width, int height)
-    {
-        var maxSide = Math.Max(width, height);
-        if (maxSide <= 16)
-            return PaperPixelArtCodec.DefaultScale;
-        if (maxSide <= 32)
-            return 8;
-        if (maxSide <= 48)
-            return 6;
-        return 4;
     }
 
     private static byte Channel(Color color, int channel)

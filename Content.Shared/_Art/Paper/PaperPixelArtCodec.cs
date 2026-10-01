@@ -38,7 +38,7 @@ public static class PaperPixelArtCodec
     /// <summary>
     /// Parsed drawing ready for the client to turn into a texture.
     /// </summary>
-    public readonly record struct PaperPixelArt(int Width, int Height, int Scale, Color[] Pixels);
+    public readonly record struct PaperPixelArt(int Width, int Height, int Scale, Color[] Pixels, int? FillPercent = null);
 
     /// <summary>
     /// One stretch of a paper page: either markup text or a decoded drawing.
@@ -135,7 +135,7 @@ public static class PaperPixelArtCodec
         return parts;
     }
 
-    public static string Encode(int width, IReadOnlyList<Color> pixels, int? scale = null)
+    public static string Encode(int width, IReadOnlyList<Color> pixels, int? scale = null, int? fillPercent = null)
     {
         if (width <= 0 || pixels.Count == 0 || pixels.Count % width != 0)
             throw new ArgumentException("Pixel buffer must be a non-empty rectangle.");
@@ -149,7 +149,12 @@ public static class PaperPixelArtCodec
         builder.Append(" w=");
         builder.Append(width);
 
-        if (scale is > 0 && scale != DefaultScale)
+        if (fillPercent is > 0)
+        {
+            builder.Append(" f=");
+            builder.Append(Math.Clamp(fillPercent.Value, 10, 100));
+        }
+        else if (scale is > 0 && scale != DefaultScale)
         {
             builder.Append(" s=");
             builder.Append(Math.Clamp(scale.Value, 1, MaxScale));
@@ -218,10 +223,14 @@ public static class PaperPixelArtCodec
         if (TryGetPositiveInt(node, "s", out var parsedScale))
             scale = Math.Clamp(parsedScale, 1, MaxScale);
 
-        return TryDecodeData(width, data, palette, scale, out art);
+        int? fill = null;
+        if (TryGetPositiveInt(node, "f", out var parsedFill))
+            fill = Math.Clamp(parsedFill, 10, 100);
+
+        return TryDecodeData(width, data, palette, scale, fill, out art);
     }
 
-    public static bool TryDecodeData(int width, string data, string? palette, int scale, out PaperPixelArt art)
+    public static bool TryDecodeData(int width, string data, string? palette, int scale, int? fill, out PaperPixelArt art)
     {
         art = default;
         if (width <= 0 || width > MaxWidth)
@@ -246,7 +255,7 @@ public static class PaperPixelArtCodec
         if (height <= 0 || height > MaxHeight || pixels.Length > MaxPixels)
             return false;
 
-        art = new PaperPixelArt(width, height, scale, pixels);
+        art = new PaperPixelArt(width, height, scale, pixels, fill);
         return true;
     }
 

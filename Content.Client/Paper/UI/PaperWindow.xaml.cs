@@ -123,6 +123,10 @@ namespace Content.Client.Paper.UI
 
             SaveButton.Text = Loc.GetString("paper-ui-save-button",
                 ("keybind", _inputManager.GetKeyFunctionButtonString(EngineKeyFunctions.MultilineTextSubmit)));
+
+            for (var p = 10; p <= 100; p += 10)
+                ImageScaleSelector.AddItem(Loc.GetString("paper-ui-insert-image-scale", ("percent", p)));
+            ImageScaleSelector.SelectId(4);
         }
 
         /// <summary>
@@ -429,7 +433,8 @@ namespace Content.Client.Paper.UI
             }
 
             var maxChars = GetRemainingInputChars();
-            if (!PaperPixelArtImporter.TryImport(file, maxChars, out var markup, out var error))
+            var fillPercent = (ImageScaleSelector.SelectedId + 1) * 10; // Art-edit
+            if (!PaperPixelArtImporter.TryImport(file, GetRemainingInputChars(), fillPercent, out var markup, out var error)) // Art-edit
             {
                 FillStatus.Text = Loc.GetString(error switch
                 {

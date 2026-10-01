@@ -33,9 +33,10 @@
             </ScrollContainer>
         </PanelContainer>
         <!-- Bottom buttons for editing -->
-        <BoxContainer Name="EditButtons" Orientation="Horizontal" HorizontalAlignment="Right" Margin="6">
+		<BoxContainer Name="EditButtons" Orientation="Horizontal" HorizontalAlignment="Right" Margin="6">
+			<OptionButton Name="ImageScaleSelector" MinWidth="90" Margin="0 0 4 0" /> <!-- Art-edit -->
 			<Button Name="InsertImageButton" Margin="0 0 8 0" /> <!-- Art-edit -->
-            <Button Name="SaveButton" />
-        </BoxContainer>
+			<Button Name="SaveButton" />
+		</BoxContainer>
     </BoxContainer>
 </paper:PaperWindow>
