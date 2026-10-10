@@ -2,6 +2,13 @@
   id: LightFixture
   start: start
   graph:
+    - node: start
+        edges:         
+          - to: floorLight
+            steps:
+              - material: Steel
+                amount: 2
+                doAfter: 2.0
     - node: floorLight
       entity: PoweredFloorLightEmpty
       edges:
