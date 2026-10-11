@@ -1489,6 +1489,19 @@
     - !type:TileNotBlocked
 
 - type: construction
+  id: FloorLightFixture
+  graph: LightFixture
+  startNode: start
+  targetNode: floorLight
+  category: construction-category-structures
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canRotate: false
+  canBuildInImpassable: false
+  conditions:
+    - !type:TileNotBlocked
+
+- type: construction
   id: LightStrobeFixture
   graph: LightFixture
   startNode: start
