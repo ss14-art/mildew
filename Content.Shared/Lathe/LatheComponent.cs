@@ -73,7 +73,7 @@ namespace Content.Shared.Lathe
         /// <summary>
         /// A modifier that changes how long it takes to print a recipe
         /// </summary>
-        [DataField, ViewVariables(VVAccess.ReadWrite)]
+        [DataField, ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
         public float TimeMultiplier = 1;
 
         /// <summary>
