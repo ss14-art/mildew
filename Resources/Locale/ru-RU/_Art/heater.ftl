@@ -1,0 +1,16 @@
+solution-heater-window-title = Химический нагреватель
+solution-heater-window-parameters-label = Параметры
+solution-heater-window-target-temperature-label = Целевая температура
+solution-heater-window-current-temperature-label = Текущая температура
+solution-heater-window-temperature-value = {$temperature} K
+solution-heater-window-no-temperature-text = Н/Д
+solution-heater-window-auto-eject-on = Авто-извлечение: Вкл
+solution-heater-window-auto-eject-off = Авто-извлечение: Выкл
+solution-heater-window-enabled-on = Включено
+solution-heater-window-enabled-off = Выключено
+solution-heater-window-container-title = Ёмкость
+solution-heater-window-container-volume = {$current} / {$max} единиц
+solution-heater-window-eject-button = Извлечь
+solution-heater-window-no-container-text = Ёмкость не вставлена.
+solution-heater-window-empty-container-text = Ёмкость пуста.
+solution-heater-window-container-reagent = {$quantity} единиц {$reagent}

@@ -133,6 +133,47 @@
   - ClothingNeckGoldAutismPin
   - ClothingNeckBling
   - ClothingNeckLawyerbadge
+  # Art-start
+  - ClothingHeadhatBlueFlowerHeadband
+  - ClothingHeadhatPurpleFlowerHeadband
+  - ClothingHeadhatLuckyClover
+  - ClothingOuterCoatBlueAssymetry
+  - ClothingOuterCoatPinkMiniFurcoat
+  - ClothingOuterCoatRaspberryCoat
+  - ClothingOuterCoatBlueCuteCardigan
+  - ClothingOuterCoatPurpleCuteCardigan
+  - ClothingOuterCoatMusicianBikingJacket
+  - ClothingOuterVestJeansVest
+  - ClothingUniformJumpsuitRaspberryRichShirt
+  - ClothingUniformJumpsuitFreedomYellowCollar
+  - ClothingUniformJumpsuitBlueHawaii
+  - ClothingUniformJumpsuitBeerDino
+  - ClothingUniformJumpsuitPinkBeerDino
+  - ClothingUniformJumpsuitCoolWolf
+  - ClothingUniformJumpsuitStarSweater
+  - ClothingUniformJumpsuitBlackCoolVest
+  - ClothingUniformJumpskirtGothCorsetDress
+  - ClothingUniformJumpskirtFluffyPinkDress
+  - ClothingUniformJumpskirtWaterfallBlueDress
+  - ClothingUniformJumpskirtSimpleSchoolDress
+  - ClothingUniformJumpskirtFarmHomeDress
+  - ClothingUniformJumpskirtYellowSimpleDress
+  - ClothingUniformJumpskirtAsianStyleDress
+  - ClothingUniformJumpskirtFlamingoPinkFluffyDress
+  - ClothingUniformJumpskirtBarbieTop
+  - ClothingUniformJumpskirtPinkDesignerDress
+  - ClothingUniformJumpskirtDivineTunic
+  - ClothingUniformJumpsuitEngineerVest
+  - ClothingUniformJumpsuitAnarchyShirt
+  - ClothingUniformJumpsuitSkeletonShirt
+  - ClothingUniformJumpsuitWitchySweater
+  - ClothingUniformJumpskirtSkullSkirt
+  - ClothingUniformJumpsuitMaidenless
+  - ClothingUniformJumpskirtMenlessShirt
+  - ClothingShoesWhiteWinterHighHeels
+  - ClothingShoesTallBoots
+  - ClothingShoesColorfullBoots
+  # Art-end
 
 
 - type: latheRecipePack

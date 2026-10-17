@@ -28,8 +28,8 @@
 - type: entity
   parent: BaseHeaterMachine
   id: ChemistryHotplate
-  name: hotplate
-  description: "The descendent of the microwaves, our newest invention in beaker heating technology: the hotplate!"
+  name: chemical heater
+  description: "A device for heating and cooling chemical solutions to a given temperature."
   components:
   - type: Sprite
     sprite: Structures/Machines/hotplate.rsi
@@ -42,6 +42,7 @@
       shader: unshaded
   - type: SolutionHeater
     heatPerSecond: 160
+    enabled: true
   - type: ItemPlacer
     whitelist:
       components:
@@ -58,3 +59,12 @@
         enum.SolutionHeaterVisuals.IsOn:
           True: { visible: true }
           False: { visible: false }
+  # SS14-Art edit start
+  - type: ActivatableUI
+    key: enum.SolutionHeaterUiKey.Key
+  - type: ActivatableUIRequiresPower
+  - type: UserInterface
+    interfaces:
+      enum.SolutionHeaterUiKey.Key:
+        type: SolutionHeaterBoundUserInterface
+  # SS14-Art edit end

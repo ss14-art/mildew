@@ -1,0 +1,57 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+                      xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+                      xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+                      MinSize="420 300"
+                      Title="{Loc 'solution-heater-window-title'}">
+    <!-- open-space edit start -->
+    <BoxContainer Orientation="Vertical" Margin="6" SeparationOverride="6">
+        <BoxContainer Orientation="Horizontal">
+            <Label Text="{Loc 'solution-heater-window-parameters-label'}"
+                   StyleClasses="LabelHeading" />
+            <Control HorizontalExpand="True" />
+            <Button Name="AutoEjectButton"
+                    Access="Public" />
+            <Button Name="EnabledButton"
+                    Access="Public" />
+        </BoxContainer>
+
+        <GridContainer Columns="2" HSeparationOverride="8" VSeparationOverride="4">
+            <Label Text="{Loc 'solution-heater-window-target-temperature-label'}" />
+            <LineEdit Name="TargetTemperatureLine"
+                      Access="Public"
+                      MinWidth="180" />
+            <Label Text="{Loc 'solution-heater-window-current-temperature-label'}" />
+            <Label Name="CurrentTemperatureLabel"
+                   Access="Public" />
+        </GridContainer>
+
+        <PanelContainer StyleClasses="LowDivider" />
+
+        <BoxContainer Orientation="Horizontal">
+            <Label Text="{Loc 'solution-heater-window-container-title'}"
+                   StyleClasses="LabelHeading" />
+            <Control HorizontalExpand="True" />
+            <Label Name="ContainerVolumeLabel"
+                   Access="Public"
+                   StyleClasses="LabelSubText"
+                   Margin="0 2 8 0" />
+            <Button Name="EjectButton"
+                    Access="Public"
+                    Text="{Loc 'solution-heater-window-eject-button'}" />
+        </BoxContainer>
+
+        <PanelContainer MinHeight="140">
+            <PanelContainer.PanelOverride>
+                <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" />
+            </PanelContainer.PanelOverride>
+            <ScrollContainer HScrollEnabled="False" VerticalExpand="True">
+                <BoxContainer Name="ContainerInfo"
+                              Access="Public"
+                              Orientation="Vertical"
+                              Margin="6"
+                              SeparationOverride="4" />
+            </ScrollContainer>
+        </PanelContainer>
+    </BoxContainer>
+    <!-- open-space edit end -->
+</controls:FancyWindow>

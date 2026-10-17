@@ -1,0 +1,194 @@
+- type: latheRecipe
+  parent: BaseHatRecipe
+  id: ClothingHeadhatBlueFlowerHeadband
+  result: ClothingHeadhatBlueFlowerHeadband
+
+- type: latheRecipe
+  parent: BaseHatRecipe
+  id: ClothingHeadhatPurpleFlowerHeadband
+  result: ClothingHeadhatPurpleFlowerHeadband
+
+- type: latheRecipe
+  parent: BaseHatRecipe
+  id: ClothingHeadhatLuckyClover
+  result: ClothingHeadhatLuckyClover
+
+- type: latheRecipe
+  parent: BaseCoatRecipe
+  id: ClothingOuterCoatBlueAssymetry
+  result: ClothingOuterCoatBlueAssymetry
+
+- type: latheRecipe
+  parent: BaseCoatRecipe
+  id: ClothingOuterCoatPinkMiniFurcoat
+  result: ClothingOuterCoatPinkMiniFurcoat
+
+- type: latheRecipe
+  parent: BaseCoatRecipe
+  id: ClothingOuterCoatRaspberryCoat
+  result: ClothingOuterCoatRaspberryCoat
+
+- type: latheRecipe
+  parent: BaseCoatRecipe
+  id: ClothingOuterCoatBlueCuteCardigan
+  result: ClothingOuterCoatBlueCuteCardigan
+
+- type: latheRecipe
+  parent: BaseCoatRecipe
+  id: ClothingOuterCoatPurpleCuteCardigan
+  result: ClothingOuterCoatPurpleCuteCardigan
+
+- type: latheRecipe
+  parent: BaseCoatRecipe
+  id: ClothingOuterCoatMusicianBikingJacket
+  result: ClothingOuterCoatMusicianBikingJacket
+
+- type: latheRecipe
+  parent: BaseCoatRecipe
+  id: ClothingOuterVestJeansVest
+  result: ClothingOuterVestJeansVest
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpsuitRaspberryRichShirt
+  result: ClothingUniformJumpsuitRaspberryRichShirt
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpsuitFreedomYellowCollar
+  result: ClothingUniformJumpsuitFreedomYellowCollar
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpsuitBlueHawaii
+  result: ClothingUniformJumpsuitBlueHawaii
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpsuitBeerDino
+  result: ClothingUniformJumpsuitBeerDino
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpsuitPinkBeerDino
+  result: ClothingUniformJumpsuitPinkBeerDino
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpsuitCoolWolf
+  result: ClothingUniformJumpsuitCoolWolf
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpsuitStarSweater
+  result: ClothingUniformJumpsuitStarSweater
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpsuitBlackCoolVest
+  result: ClothingUniformJumpsuitBlackCoolVest
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpskirtGothCorsetDress
+  result: ClothingUniformJumpskirtGothCorsetDress
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpskirtFluffyPinkDress
+  result: ClothingUniformJumpskirtFluffyPinkDress
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpskirtWaterfallBlueDress
+  result: ClothingUniformJumpskirtWaterfallBlueDress
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpskirtSimpleSchoolDress
+  result: ClothingUniformJumpskirtSimpleSchoolDress
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpskirtFarmHomeDress
+  result: ClothingUniformJumpskirtFarmHomeDress
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpskirtYellowSimpleDress
+  result: ClothingUniformJumpskirtYellowSimpleDress
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpskirtAsianStyleDress
+  result: ClothingUniformJumpskirtAsianStyleDress
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpskirtFlamingoPinkFluffyDress
+  result: ClothingUniformJumpskirtFlamingoPinkFluffyDress
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpskirtBarbieTop
+  result: ClothingUniformJumpskirtBarbieTop
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpskirtPinkDesignerDress
+  result: ClothingUniformJumpskirtPinkDesignerDress
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpskirtDivineTunic
+  result: ClothingUniformJumpskirtDivineTunic
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpsuitEngineerVest
+  result: ClothingUniformJumpsuitEngineerVest
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpsuitAnarchyShirt
+  result: ClothingUniformJumpsuitAnarchyShirt
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpsuitSkeletonShirt
+  result: ClothingUniformJumpsuitSkeletonShirt
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpsuitWitchySweater
+  result: ClothingUniformJumpsuitWitchySweater
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpskirtSkullSkirt
+  result: ClothingUniformJumpskirtSkullSkirt
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpsuitMaidenless
+  result: ClothingUniformJumpsuitMaidenless
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpskirtMenlessShirt
+  result: ClothingUniformJumpskirtMenlessShirt
+
+- type: latheRecipe
+  parent: BaseShoesClothingRecipeCheap
+  id: ClothingShoesWhiteWinterHighHeels
+  result: ClothingShoesWhiteWinterHighHeels
+
+- type: latheRecipe
+  parent: BaseShoesClothingRecipeCheap
+  id: ClothingShoesTallBoots
+  result: ClothingShoesTallBoots
+
+- type: latheRecipe
+  parent: BaseShoesClothingRecipeCheap
+  id: ClothingShoesColorfullBoots
+  result: ClothingShoesColorfullBoots

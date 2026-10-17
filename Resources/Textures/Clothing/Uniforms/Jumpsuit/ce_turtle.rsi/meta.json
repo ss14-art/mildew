@@ -1,7 +1,7 @@
 {
   "version": 1,
   "license": "CC-BY-SA-3.0",
-  "copyright": "Modified from https://github.com/space-wizards/space-station-14/tree/master/Resources/Textures/Clothing/Uniforms/Jumpsuit/qmturtle.rsi by KingFroozy (github) for space station 14",
+  "copyright": "For corvax WL from baohe",
   "size": {
     "x": 32,
     "y": 32
@@ -18,6 +18,10 @@
       "name": "equipped-INNERCLOTHING-monkey",
       "directions": 4
     },
+    {
+        "name": "equipped-INNERCLOTHING-reptilian",
+        "directions": 4
+      },
     {
       "name": "inhand-left",
       "directions": 4

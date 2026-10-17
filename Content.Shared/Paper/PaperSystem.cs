@@ -16,6 +16,7 @@ using Robust.Shared.Random;
 using System.Linq;
 using Content.Shared.Persistence.Paper;
 using static Content.Shared.Paper.PaperComponent;
+using Content.Shared._Art.Paper; // Art-edit
 
 namespace Content.Shared.Paper;
 
@@ -195,11 +196,14 @@ public sealed class PaperSystem : EntitySystem
         if (ev.Cancelled)
             return;
 
-        if (args.Text.Length <= entity.Comp.ContentSize)
+        // Art-start
+		var submitted = PaperPixelArtCodec.Compress(args.Text);
+        if (submitted.Length <= entity.Comp.ContentSize)
+        // Art-end
         {
-            SetContent(entity, args.Text);
+            SetContent(entity, submitted); // Art-edit
 
-            var paperStatus = string.IsNullOrWhiteSpace(args.Text) ? PaperStatus.Blank : PaperStatus.Written;
+            var paperStatus = string.IsNullOrWhiteSpace(submitted) ? PaperStatus.Blank : PaperStatus.Written;  
 
             if (TryComp<AppearanceComponent>(entity, out var appearance))
                 _appearance.SetData(entity, PaperVisuals.Status, paperStatus, appearance);
@@ -209,7 +213,7 @@ public sealed class PaperSystem : EntitySystem
 
             _adminLogger.Add(LogType.Chat,
                 LogImpact.Low,
-                $"{ToPrettyString(args.Actor):player} has written on {ToPrettyString(entity):entity} the following text: {args.Text}");
+                $"{ToPrettyString(args.Actor):player} has written on {ToPrettyString(entity):entity} the following text: {submitted}"); // Art-edit
 
             _audio.PlayPvs(entity.Comp.Sound, entity);
         }

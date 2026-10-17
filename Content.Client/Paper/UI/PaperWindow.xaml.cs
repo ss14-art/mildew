@@ -12,6 +12,10 @@ using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Input;
 using Robust.Shared.Utility;
 using System.Numerics;
+using Content.Client._Art.RichText; // Art-edit
+using Content.Client._Art.Paper; // Art-edit
+using Content.Shared._Art.Paper; // Art-edit
+using System.IO; // Art-edit
 
 namespace Content.Client.Paper.UI
 {
@@ -21,6 +25,9 @@ namespace Content.Client.Paper.UI
         private string _currentRawText = string.Empty;
         [Dependency] private readonly IInputManager _inputManager = default!;
         [Dependency] private readonly IResourceCache _resCache = default!;
+		[Dependency] private IFileDialogManager _fileDialogs = default!; // Art-edit
+		
+        private bool _imageDialogOpen; // Art-edit
 
         private static readonly Color DefaultTextColor = new(25, 25, 25);
 
@@ -54,19 +61,15 @@ namespace Content.Client.Paper.UI
             typeof(SignatureTagHandler),
             typeof(CheckTagHandler),
 			// Art-start
-            typeof(DateTagHandler),
-            typeof(SpeciesTagHandler),
-            typeof(GenderTagHandler),
+			typeof(SmallTag),
+			typeof(UnderlineTag),
+			typeof(StrikethroughTag),
 			// Art-end
         ];
 
         public event Action<string>? OnSaved;
         public event Action<int>? OnSignatureRequested;
         public event Action<string>? OnSignatureFieldRequested;
-		// Art-start
-		public event Action<int>? OnSpeciesRequested;
-		public event Action<int>? OnGenderRequested;
-		// Art-end
 
         private int _maxInputLength = -1;
         public int MaxInputLength
@@ -114,8 +117,16 @@ namespace Content.Client.Paper.UI
                 RunOnSaved();
             };
 
+			InsertImageButton.Text = Loc.GetString("paper-ui-insert-image-button");  
+			InsertImageButton.ToolTip = Loc.GetString("paper-ui-insert-image-tooltip");  
+			InsertImageButton.OnPressed += _ => OnInsertImagePressed();
+
             SaveButton.Text = Loc.GetString("paper-ui-save-button",
                 ("keybind", _inputManager.GetKeyFunctionButtonString(EngineKeyFunctions.MultilineTextSubmit)));
+
+            for (var p = 10; p <= 100; p += 10)
+                ImageScaleSelector.AddItem(Loc.GetString("paper-ui-insert-image-scale", ("percent", p)));
+            ImageScaleSelector.SelectId(4);
         }
 
         /// <summary>
@@ -271,7 +282,7 @@ namespace Content.Client.Paper.UI
 
             InputContainer.Visible = isEditing;
             EditButtons.Visible = isEditing;
-            WrittenTextLabel.Visible = !isEditing;
+            // WrittenTextLabel.Visible = !isEditing; // Art-edit
             WrittenTextContainer.Visible = false;
             BlankPaperIndicator.Visible = !isEditing && state.Text.Length == 0;
 
@@ -298,15 +309,14 @@ namespace Content.Client.Paper.UI
             FormTagHandler.ResetFormCounter();
             SignatureTagHandler.ResetSignatureCounter();
             CheckTagHandler.ResetCheckCounter();
-			// Art-start
-			DateTagHandler.ResetDateCounter();
-            SpeciesTagHandler.ResetSpeciesCounter();
-            GenderTagHandler.ResetGenderCounter();
-			// Art-end
 
             var fm = new FormattedMessage();
             fm.AddMarkupPermissive(state.Text);
             WrittenTextLabel.SetMessage(fm, _allowedTags, DefaultTextColor);
+			// Art-start
+			WrittenContent.Visible = state.Text.Length > 0;
+			RebuildWrittenContent(state.Text, state.StampedBy.Count > 0);
+			// Art-end
 
             var tagCount = CountTags(state.Text);
             var extraBottomMargin = tagCount * 3.0f; // 3 pixels per tag for extra height
@@ -319,6 +329,45 @@ namespace Content.Client.Paper.UI
                 StampDisplay.AddStamp(new StampWidget { StampInfo = stamper });
             }
         }
+
+		// Art-start
+        private void RebuildWrittenContent(string text, bool stampPadding)
+        {
+            WrittenContent.RemoveAllChildren();
+
+            var maxWidth = PaperContent.MaxWidth > 0 ? PaperContent.MaxWidth : 600f;
+            foreach (var part in PaperPixelArtCodec.SplitDocument(text))
+            {
+                if (part.Art is { } art)
+                {
+                    WrittenContent.AddChild(PaperPixelArtView.Create(art, maxWidth));
+                    continue;
+                }
+
+                if (string.IsNullOrEmpty(part.Text))
+                    continue;
+
+                WrittenContent.AddChild(CreatePaperLabel(part.Text));
+            }
+
+            if (stampPadding)
+                WrittenContent.AddChild(CreatePaperLabel("\r\n\r\n\r\n\r\n\r\n\r\n"));
+        }
+
+        private RichTextLabel CreatePaperLabel(string markup)
+        {
+            var label = new RichTextLabel
+            {
+                StyleClasses = { "PaperWrittenText" },
+                VerticalAlignment = Control.VAlignment.Top,
+                ModulateSelfOverride = WrittenTextLabel.ModulateSelfOverride
+            };
+            var msg = new FormattedMessage();
+            msg.AddMarkupPermissive(markup);
+            label.SetMessage(msg, _allowedTags, DefaultTextColor);
+            return label;
+        }
+		// Art-end
 
         /// <summary>
         ///     BaseWindow interface. Allow users to drag UI around by grabbing
@@ -356,28 +405,99 @@ namespace Content.Client.Paper.UI
             return mode & _allowedResizeModes;
         }
 
+		// Art-start
+        private async void OnInsertImagePressed()
+        {
+            if (_imageDialogOpen || InsertImageButton.Disabled)
+                return;
+
+            _imageDialogOpen = true;
+            InsertImageButton.Disabled = true;
+
+            var filters = new FileDialogFilters(
+                new FileDialogFilters.Group("png", "webp", "jpg", "jpeg", "gif", "bmp"),
+                new FileDialogFilters.Group("png"),
+                new FileDialogFilters.Group("webp"),
+                new FileDialogFilters.Group("jpg", "jpeg"));
+            await using var file = await _fileDialogs.OpenFile(filters, FileAccess.Read);
+
+            _imageDialogOpen = false;
+
+            if (Disposed)
+                return;
+
+            if (file == null)
+            {
+                UpdateFillState();
+                return;
+            }
+
+            var maxChars = GetRemainingInputChars();
+            var fillPercent = (ImageScaleSelector.SelectedId + 1) * 10; // Art-edit
+            if (!PaperPixelArtImporter.TryImport(file, GetRemainingInputChars(), fillPercent, out var markup, out var error)) // Art-edit
+            {
+                FillStatus.Text = Loc.GetString(error switch
+                {
+                    PaperPixelArtImportError.FileTooLarge => "paper-ui-insert-image-too-large",
+                    PaperPixelArtImportError.NoSpace => "paper-ui-insert-image-no-space",
+                    _ => "paper-ui-insert-image-failed"
+                });
+                UpdateFillState(keepStatusMessage: true);
+                return;
+            }
+
+            InsertDrawingMarkup(markup);
+            UpdateFillState();
+        }
+
+        private void InsertDrawingMarkup(string markup)
+        {
+            var text = Rope.Collapse(Input.TextRope);
+            var cursor = Math.Clamp(Input.CursorPosition.Index, 0, text.Length);
+            var prefix = cursor > 0 && text[cursor - 1] != '\n' ? "\n" : string.Empty;
+            Input.InsertAtCursor(prefix + markup + "\n");
+        }
+
+        private int GetRemainingInputChars()
+        {
+            var used = PaperPixelArtCodec.Compress(Rope.Collapse(Input.TextRope)).Length;
+            if (MaxInputLength < 0)
+                return PaperPixelArtCodec.MaxPixels * 6;
+
+            // Leave a little room for the wrapping newlines around the tag.
+            return Math.Max(0, MaxInputLength - used - 2);
+        }
+		// Art-end
+
         private void RunOnSaved()
         {
             // Prevent further saving while text processing still in
             SaveButton.Disabled = true;
-            OnSaved?.Invoke(Rope.Collapse(Input.TextRope));
+            OnSaved?.Invoke(PaperPixelArtCodec.Compress(Rope.Collapse(Input.TextRope))); // Art-edit
         }
 
-        private void UpdateFillState()
+        private void UpdateFillState(bool keepStatusMessage = false)  // Art-edit
         {
             if (MaxInputLength != -1)
             {
-                var inputLength = Input.TextLength;
-                FillStatus.Text = Loc.GetString("paper-ui-fill-level",
-                    ("currentLength", inputLength),
-                    ("maxLength", MaxInputLength));
+                var inputLength = PaperPixelArtCodec.Compress(Rope.Collapse(Input.TextRope)).Length; // Art-edit
+				// Art-start
+				if (!keepStatusMessage)
+				{
+					FillStatus.Text = Loc.GetString("paper-ui-fill-level",
+						("currentLength", inputLength),
+						("maxLength", MaxInputLength));
+				}
+				// Art-end
                 // Disable the save button if we've gone over the limit
                 SaveButton.Disabled = inputLength > MaxInputLength;
+				InsertImageButton.Disabled = _imageDialogOpen || GetRemainingInputChars() < 32; // Art-edit
             }
             else
             {
                 FillStatus.Text = "";
                 SaveButton.Disabled = false;
+				InsertImageButton.Disabled = _imageDialogOpen; // Art-edit
             }
         }
 
@@ -430,12 +550,8 @@ namespace Content.Client.Paper.UI
 
         public void SendSignatureRequest(int signatureIndex) => OnSignatureRequested?.Invoke(signatureIndex);
         public void SendFieldSignatureRequest(string field) => OnSignatureFieldRequested?.Invoke(field);
-		// Art-start
-		public void SendSpeciesRequest(int index) => OnSpeciesRequested?.Invoke(index);
-		public void SendGenderRequest(int index) => OnGenderRequested?.Invoke(index);
-		// Art-end
-        private Button? FindFormButton(int index) => FindNthButton(WrittenTextLabel, index, Loc.GetString("paper-form-fill-button"));
-        private Button? FindCheckButton(int index) => FindNthButton(WrittenTextLabel, index, PaperTagHelper.CheckSymbols);
+		private Button? FindFormButton(int index) => FindNthButton(WrittenContent, index, Loc.GetString("paper-form-fill-button")); // Art-edit
+		private Button? FindCheckButton(int index) => FindNthButton(WrittenContent, index, PaperTagHelper.CheckSymbols); // Art-edit
 
         private static Button? FindNthButton(Control root, int targetIndex, params string[] buttonTexts)
         {
@@ -527,7 +643,7 @@ namespace Content.Client.Paper.UI
         }
 
         private static int CountTags(string text) =>
-            CountOccurrences(text, "[form]") + CountOccurrences(text, "[signature]") + CountOccurrences(text, "[check]") + CountOccurrences(text, "[date]") + CountOccurrences(text, "[species]") + CountOccurrences(text, "[gender]");  // Art-edit
+            CountOccurrences(text, "[form]") + CountOccurrences(text, "[signature]") + CountOccurrences(text, "[check]");
 
         private static int CountOccurrences(string text, string substring)
         {

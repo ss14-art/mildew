@@ -1,4 +1,4 @@
 ent-BaseHeaterMachine = { ent-BaseMachinePowered }
     .desc = { ent-BaseMachinePowered.desc }
-ent-ChemistryHotplate = электроплитка
-    .desc = Потомок микроволновой печи, наше новейшее изобретение в технологии нагрева мензурок: электроплитка!
+ent-ChemistryHotplate = термоплита
+    .desc = Устройство для нагрева и охлаждения химических растворов до заданной температуры.

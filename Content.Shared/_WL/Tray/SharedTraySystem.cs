@@ -1,0 +1,50 @@
+using Content.Shared.Item;
+using Robust.Shared.Map;
+
+namespace Content.Shared._WL.Tray;
+
+public abstract partial class SharedTraySystem : EntitySystem
+{
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
+    [Dependency] private SharedItemSystem _item = default!;
+
+    public void UpdateVisuals(EntityUid uid, TrayComponent component)
+    {
+        _appearance.SetData(uid, TrayVisualState.HasEntities, component.ConnectedEntities.Count > 0);
+        _appearance.SetData(uid, TrayVisualState.Closed, component.Closed);
+    }
+
+    public void UpdateSize(EntityUid uid, TrayComponent component)
+    {
+        if (component.ConnectedEntities.Count > 0)
+            _item.SetSize(uid, component.FilledSize);
+        else
+            _item.SetSize(uid, component.DefaultSize);
+    }
+
+    public void PutItemOnTray(EntityUid uid, TrayComponent component, EntityUid item, EntityCoordinates position)
+    {
+        var offsetCoordinates = _transform.ToCoordinates(uid, _transform.ToMapCoordinates(position));
+        _transform.SetCoordinates(item, offsetCoordinates);
+        _transform.SetLocalRotation(item, 0);
+
+        component.ConnectedEntities.Add(item, offsetCoordinates);
+
+        var onTray = EnsureComp<OnTrayComponent>(item);
+        onTray.TrayEntity = uid;
+
+        UpdateVisuals(uid, component);
+        UpdateSize(uid, component);
+    }
+
+    public void RemoveItemFromTray(EntityUid uid, TrayComponent component, EntityUid item)
+    {
+        component.ConnectedEntities.Remove(item);
+
+        UpdateVisuals(uid, component);
+        UpdateSize(uid, component);
+
+        RemComp<OnTrayComponent>(item);
+    }
+}

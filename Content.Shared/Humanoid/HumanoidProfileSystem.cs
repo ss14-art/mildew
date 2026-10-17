@@ -4,7 +4,6 @@ using Content.Shared.IdentityManagement;
 using Content.Shared.Preferences;
 using Robust.Shared.GameObjects.Components.Localization;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Enums; // Art-edit
 
 namespace Content.Shared.Humanoid;
 
@@ -60,22 +59,6 @@ public sealed class HumanoidProfileSystem : EntitySystem
         Log.Error("Tried to get representation of unknown species: {speciesId}");
         return Loc.GetString("humanoid-appearance-component-unknown-species");
     }
-
-    // Art-start
-	public string GetSpeciesRepresentation(EntityUid uid)  
-    {  
-        if (TryComp<HumanoidProfileComponent>(uid, out var profile))  
-            return GetSpeciesRepresentation(profile.Species);  
-        return Loc.GetString("humanoid-appearance-component-unknown-species");  
-    }  
-    
-    public Gender GetGender(EntityUid uid)  
-    {  
-        return TryComp<HumanoidProfileComponent>(uid, out var profile)  
-            ? profile.Gender  
-            : Gender.Epicene;  
-    }
-    // Art-end
 
     /// <summary>
     /// Takes ID of the species prototype and an age, returns an approximate description

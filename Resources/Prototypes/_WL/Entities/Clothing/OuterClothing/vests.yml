@@ -1,0 +1,15 @@
+- type: entity
+  parent: ClothingOuterStorageBase
+  id: ClothingOuterVestJeansVest
+  name: jeans vest
+  description: Rock-n-roll
+  components:
+  - type: Sprite
+    sprite: _WL/Clothing/OuterClothing/Vests/jeansvest.rsi
+  - type: Clothing
+    sprite: _WL/Clothing/OuterClothing/Vests/jeansvest.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9

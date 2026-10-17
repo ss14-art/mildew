@@ -1,7 +1,7 @@
 {
   "version": 1,
   "license": "CC-BY-SA-3.0",
-  "copyright": "Sprited by KingFroozy (github) for space station 14",
+  "copyright": "For corvax WL from whitley and baohe",
   "size": {
     "x": 32,
     "y": 32
@@ -11,15 +11,30 @@
       "name": "icon"
     },
     {
+      "name": "icon-open"
+    },
+    {
+      "name": "open-equipped-INNERCLOTHING",
+      "directions": 4
+    },
+    {
       "name": "equipped-INNERCLOTHING",
       "directions": 4
     },
     {
-      "name": "folded-equipped-INNERCLOTHING",
+      "name": "equipped-INNERCLOTHING-monkey",
       "directions": 4
     },
     {
-      "name": "equipped-INNERCLOTHING-monkey",
+      "name": "equipped-INNERCLOTHING-reptilian",
+      "directions": 4
+    },
+    {
+      "name": "open-equipped-INNERCLOTHING-monkey",
+      "directions": 4
+    },
+    {
+      "name": "open-equipped-INNERCLOTHING-reptilian",
       "directions": 4
     },
     {
@@ -28,6 +43,14 @@
     },
     {
       "name": "inhand-right",
+      "directions": 4
+    },
+    {
+      "name": "open-inhand-left",
+      "directions": 4
+    },
+    {
+      "name": "open-inhand-right",
       "directions": 4
     }
   ]
