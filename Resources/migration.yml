@@ -810,3 +810,7 @@ CrateVendingMachineRestockDonutFilled: VendingMachineRestockDonut
 
 # Art
 TradeStationEngineeringSpawnerMarker: null
+
+# Persistence 14 - 9/14/2026
+TelecomServer1k: AdvancedTelecomServer
+TelecomServer1kCircuitboard: TelecomServerAdvancedCircuitboard
