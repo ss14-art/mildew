@@ -1,7 +1,6 @@
-using Content.Shared.Access;
 using Content.Shared.TurretController;
 using Robust.Client.UserInterface;
-using Robust.Shared.Prototypes;
+using Content.Client.UserInterface.Controls;
 
 namespace Content.Client.TurretController;
 
@@ -17,8 +16,7 @@ public sealed class TurretControllerWindowBoundUserInterface(EntityUid owner, En
         _window = this.CreateWindow<TurretControllerWindow>();
         _window.SetOwner(Owner);
         _window.OpenCentered();
-
-        _window.OnAccessLevelsChangedEvent += OnAccessLevelChanged;
+        _window.OnAccessAssignmentsChangedEvent += OnAccessAssignmentsChanged;
         _window.OnArmamentSettingChangedEvent += OnArmamentSettingChanged;
     }
 
@@ -32,9 +30,9 @@ public sealed class TurretControllerWindowBoundUserInterface(EntityUid owner, En
         _window?.UpdateState(castState);
     }
 
-    private void OnAccessLevelChanged(HashSet<ProtoId<AccessLevelPrototype>> accessLevels, bool enabled)
+    private void OnAccessAssignmentsChanged(HashSet<int> accessAssignments, bool enabled)
     {
-        SendPredictedMessage(new DeployableTurretExemptAccessLevelChangedMessage(accessLevels, enabled));
+        SendPredictedMessage(new DeployableTurretExemptAccessLevelChangedMessage(accessAssignments, enabled));
     }
 
     private void OnArmamentSettingChanged(TurretControllerWindow.TurretArmamentSetting setting)
