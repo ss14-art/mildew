@@ -39,6 +39,20 @@
       state: "grinder_empty"
   - type: ApcPowerReceiver
     powerLoad: 0
+  - type: AutomationSlots # Goobstation
+    slots:
+    - !type:AutomatedItemSlot
+      input: AutomationSlotBeaker
+      output: AutomationSlotBeaker
+      slotId: beakerSlot
+    - !type:AutomatedContainer
+      input: AutomationSlotInput
+      output: AutomationSlotInput
+      whitelist:
+        components:
+        - Extractable # shitcode doesnt require this with container attempt events just in interaction
+      containerId: inputContainer
+      maxItems: 6 # manually have to sync it with ReagentGrinderComponent :
   - type: PowerState
     idlePowerDraw: 0
     workingPowerDraw: 750 # medium power blender
