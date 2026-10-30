@@ -1,5 +1,6 @@
 using Content.Shared.Cargo;
 using Content.Shared.Cargo.Prototypes;
+using Content.Shared.EntityTable.EntitySelectors;
 using Content.Shared.Nutrition;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
@@ -50,6 +51,9 @@ public sealed partial class RumorPrototype : IPrototype
     public List<ProtoId<FlavorPrototype>> PossibleFlavors = new();
 
     [DataField]
+    public List<List<ProtoId<FlavorPrototype>>> PossibleFlavorGroups = new();
+
+    [DataField]
     public int FlavorsToPick = 1;
     [DataField]
     public int CompletionTarget = 30;
@@ -60,6 +64,9 @@ public sealed partial class RumorPrototype : IPrototype
 
     [DataField]
     public string TargetTag = "";
+    [DataField]
+    public EntityTableSelector? Table;
+
 }
 public enum CompletionType
 {
@@ -72,7 +79,9 @@ public enum CompletionType
     Eat,
     Drink,
     Pray,
-    ArtifactNodesUnlock
+    ArtifactNodesUnlock,
+    ReceiveMail,
+    AnomalyStabilize
 
 }
 
@@ -111,6 +120,8 @@ public partial class ActiveRumor
     [DataField]
     public List<ProtoId<FlavorPrototype>> TargetFlavors = new();
     [DataField]
+    public List<List<ProtoId<FlavorPrototype>>> TargetFlavorGroups = new();
+    [DataField]
     public int CompletionProgress = 0;
     [DataField]
     public ProtoId<RumorPrototype> OriginalPrototype;
@@ -126,6 +137,8 @@ public partial class ActiveRumor
     public bool Cancelable = false;
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer))]
     public TimeSpan CancelTime = TimeSpan.Zero;
+
+
     public ActiveRumor(ProtoId<RumorPrototype> originalPrototype)
     {
         OriginalPrototype = originalPrototype;

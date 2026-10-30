@@ -16,5 +16,7 @@ public sealed partial class GridSelfDeleteComponent : Component
     public TimeSpan AnnounceTime = TimeSpan.Zero;
     [DataField]
     public TimeSpan AnnounceCooldown = TimeSpan.FromMinutes(10);
+    [DataField]
+    public List<EntityUid> SpawnedMobs = new();
 
 }

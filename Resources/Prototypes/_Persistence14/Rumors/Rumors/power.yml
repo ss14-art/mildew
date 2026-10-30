@@ -25,7 +25,7 @@
   name: Энергетические резервы
   description: "Восстановите питание двух СМЭСов и подстанции, чтобы мы могли получить наши научные данные!"
   eventGrids:
-    - /Maps/Rumors/Charge/lumi-charge.yml
+    - /Maps/Rumors/Charge/syndi-charge.yml
   cashReward: 5000
   reputationReward: 50
   completionType: Power

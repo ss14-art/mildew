@@ -6,6 +6,7 @@
     - DrinkBasicEvil
     - EatBasicEvil
     - PrayBasicEvil
+    - ReceiveMailEvil
   color: DarkGray
   levels:
     Shadow2: 150
@@ -15,17 +16,18 @@
 
 - type: metaFactionLevel
   id: Shadow2
-  name: Pawn
+  name: Neophyte
   rumorRewards:
     - ShadowUpgradeModule
     - TradeGood
     - ShadowCodexFragment
+    - ShadowMerchCrate
     - GrandLottery
   rewardsToOffer: 2
 
 - type: metaFactionLevel
   id: Shadow3
-  name: Cultist
+  name: Truth Seeker
   rumorRewards:
     - ShadowUpgradeModule
     - TradeGood
@@ -46,7 +48,7 @@
 
 - type: metaFactionLevel
   id: Shadow4
-  name: Cult Leader
+  name: Knowledge Keeper
   rumorRewards:
     - ShadowUpgradeModule
     - TradeGood

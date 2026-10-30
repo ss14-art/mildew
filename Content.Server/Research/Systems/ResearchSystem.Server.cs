@@ -9,30 +9,7 @@ namespace Content.Server.Research.Systems;
 
 public sealed partial class ResearchSystem
 {
-    private void InitializeServer()
-    {
-        SubscribeLocalEvent<ResearchServerComponent, TechnologyDatabaseModifiedEvent>(OnServerDatabaseModified);
-        SubscribeLocalEvent<ResearchServerComponent, MapInitEvent>(OnServerMapInit);
-        SubscribeLocalEvent<ResearchServerComponent, AnchorStateChangedEvent>(OnServerAnchorStateChange);
-        SubscribeLocalEvent<ResearchServerComponent, StationTaggedStateChangedEvent>(OnServerFactionChange);
-    }
-
-    private void OnServerMapInit(EntityUid uid, ResearchServerComponent serverComponent, ref MapInitEvent args)
-    {
-        EnsureServerReferences(uid);
-    }
-
-    private void OnServerAnchorStateChange(EntityUid uid, ResearchServerComponent serverComponent, ref AnchorStateChangedEvent args)
-    {
-        if (args.Anchored)
-            EnsureServerReferences(uid);
-    }
-
-    private void OnServerFactionChange(EntityUid uid, ResearchServerComponent serverComponent, ref StationTaggedStateChangedEvent args)
-    {
-        EnsureServerReferences(uid);
-    }
-
+    [SubscribeLocalEvent]
     private void OnServerDatabaseModified(EntityUid uid, ResearchServerComponent component, ref TechnologyDatabaseModifiedEvent args)
     {
         foreach (var client in GetServerClients((uid, component)))
@@ -54,42 +31,6 @@ public sealed partial class ResearchSystem
         if (!CanRun(uid))
             return;
         ModifyServerPoints(uid, GetPointsPerSecond(uid, component) * time, component);
-    }
-
-    private void EnsureServerReferences(Entity<ResearchServerComponent?, TechnologyDatabaseComponent?> server)
-    {
-        if (!Resolve(server.Owner, ref server.Comp1, ref server.Comp2))
-            return;
-
-        var (serverUid, serverComp, dbComp) = (server.Owner, server.Comp1!, server.Comp2!);
-
-        var serverXform = Transform(serverUid);
-        if (serverXform.GridUid is not { } grid)
-            return; // If you are not on a grid, I do not care about you. At all.
-
-        bool reset = false;
-        if (!_pid.TryResolveId(serverComp.LastKnownGrid, out var lastGridEnt) || lastGridEnt.Owner != grid)
-            reset = true;
-
-        var faction = _station.GetOwningStation(server.Owner);
-        if (_pid.TryResolveId(serverComp.LastKnownFaction, out var lastFactionEnt))
-        {
-            if (faction != lastFactionEnt) // Faction doesn't match previously linked faction.
-                reset = true;
-        }
-        else if (faction != null) // Faction is linked when it wasn't previously.
-            reset = true;
-
-        if (!reset)
-            return;
-
-        ResetDB((serverUid, serverComp, dbComp));
-        if (faction is not null)
-            serverComp.LastKnownFaction = _pid.EnsureId(faction.Value);
-        else
-            serverComp.LastKnownFaction = PersistentIdentifierSystem.EmptyId;
-        serverComp.LastKnownGrid = _pid.EnsureId(grid);
-        Dirty(serverUid, serverComp);
     }
 
     /// <summary>

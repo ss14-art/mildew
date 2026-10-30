@@ -6,6 +6,7 @@
     - DrinkBasicFriendly
     - EatBasicFriendly
     - PrayBasicFriendly
+    - ReceiveMailFriendly
   color: Green
   levels:
     Green2: 150

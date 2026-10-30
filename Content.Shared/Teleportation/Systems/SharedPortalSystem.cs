@@ -38,6 +38,7 @@ public abstract partial class SharedPortalSystem : EntitySystem
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private TagSystem _tag = default!;
     [Dependency] private PersistentIdentifierSystem _pid = default!;
+    [Dependency] private LinkedEntitySystem _link = default!;
 
     private const string PortalFixture = "portalFixture";
     private const string ProjectileFixture = "projectile";
@@ -137,7 +138,10 @@ public abstract partial class SharedPortalSystem : EntitySystem
             // pick a target and teleport there
             var target = _random.Pick(link.LinkedEntities);
             if (!_pid.TryResolveId(target, out var targetEnt))
-                return;
+            {
+                _link.TrySever(ent.Owner, target);
+                return; // TODO: It would make more sense to pick another...
+            }
 
             if (HasComp<PortalComponent>(targetEnt.Owner))
             {

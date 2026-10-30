@@ -48,6 +48,10 @@
           True: { state: icon-on }
           False: { state: icon }
 # End Persistence
+# Art-start
+  - type: MagnetPickup
+    range: 2
+# Art-end
 
 - type: entity
   parent: OreBag

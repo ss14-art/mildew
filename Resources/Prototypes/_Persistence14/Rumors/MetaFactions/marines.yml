@@ -6,6 +6,7 @@
     - DrinkBasicFriendly
     - EatBasicFriendly
     - DrinkBasicEvil
+    - ReceiveMailFriendly
   color: Olive
   levels:
     Marines2: 150
@@ -20,7 +21,7 @@
     - MarineUpgradeModule
     - TradeGood
     - MarineCodexFragment
-    - GrandLottery
+    - UNMCMerchCrate
     - MarineWebbing
   rewardsToOffer: 2
 

@@ -58,6 +58,14 @@ public sealed partial class PersistentIdentifierSystem : EntitySystem
         id = EmptyId;
         return false;
     }
+    public bool TryGetId(EntityUid uid, out string id)
+    {
+        if (TryComp<PersistentIdentifierComponent>(uid, out var comp))
+            return TryGetId((uid, comp), out id);
+
+        id = EmptyId;
+        return false;
+    }
 
     /// <summary>
     /// Resets the ID of a <see cref="PersistentIdentifierComponent"/> to a new valid GUID.

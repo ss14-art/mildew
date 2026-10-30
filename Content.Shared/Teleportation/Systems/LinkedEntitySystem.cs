@@ -31,10 +31,10 @@ public sealed partial class LinkedEntitySystem : EntitySystem
         {
             if (!_pid.TryResolveId(entPid, out var ent))
                 component.LinkedEntities.Remove(entPid);
-                
+
             if (!Deleted(ent) && LifeStage(ent) < EntityLifeStage.Terminating && TryComp<LinkedEntityComponent>(ent, out var link))
             {
-                TryUnlink(uid, ent, component, link);
+                TrySever((ent, link), uid);
             }
         }
     }
@@ -120,8 +120,8 @@ public sealed partial class LinkedEntitySystem : EntitySystem
         if (!Resolve(second, ref secondLink))
             return false;
 
-        var success = firstLink.LinkedEntities.Remove(_pid.EnsureId(second))
-                      && secondLink.LinkedEntities.Remove(_pid.EnsureId(first));
+        var success = _pid.TryGetId(first, out var firstId) && firstLink.LinkedEntities.Remove(firstId) &&
+                      _pid.TryGetId(second, out var secondId) && secondLink.LinkedEntities.Remove(secondId);
 
         _appearance.SetData(first, LinkedEntityVisuals.HasAnyLinks, firstLink.LinkedEntities.Any());
         _appearance.SetData(second, LinkedEntityVisuals.HasAnyLinks, secondLink.LinkedEntities.Any());
@@ -141,6 +141,75 @@ public sealed partial class LinkedEntitySystem : EntitySystem
             QueueDel(second);
 
         return success;
+    }
+
+    /// <summary>
+    /// Severs the connections of a given target node in a one-sided way. In general, you should really use TryUnlink.
+    /// Raises no events on any of the removed connections, only rases events on the target.
+    /// </summary>
+    public bool TrySever(Entity<LinkedEntityComponent?> target, params EntityUid[] connectionsToRemove)
+    {
+        if (!Resolve(target, ref target.Comp))
+            return false;
+
+        if (connectionsToRemove.Length <= 0)
+        {
+            connectionsToRemove = target.Comp.LinkedEntities.Select(x =>
+            {
+                if (!_pid.TryResolveId(x, out var val))
+                    return default;
+                return val.Owner;
+            }).ToArray();
+        }
+
+        var any = false;
+        foreach (var connection in connectionsToRemove)
+        {
+            if (!_pid.TryGetId(connection, out var pid) || !target.Comp.LinkedEntities.Remove(pid))
+                continue;
+
+            Dirty(target);
+        }
+
+        if (!any)
+            return false;
+
+        var ev = new LinkedEntityChangedEvent(target.Comp.LinkedEntities);
+        RaiseLocalEvent(target, ref ev);
+
+        if (target.Comp.LinkedEntities.Count == 0 && target.Comp.DeleteOnEmptyLinks)
+            QueueDel(target);
+
+        return true;
+    }
+
+    public bool TrySever(Entity<LinkedEntityComponent?> target, params PersistentEntityReference[] idsToRemove)
+    {
+        if (!Resolve(target, ref target.Comp))
+            return false;
+
+        if (idsToRemove.Length <= 0)
+            idsToRemove = target.Comp.LinkedEntities.ToArray();
+
+        var any = false;
+        foreach (var id in idsToRemove)
+        {
+            if (!target.Comp.LinkedEntities.Remove(id))
+                continue;
+
+            Dirty(target);
+        }
+
+        if (!any)
+            return false;
+
+        var ev = new LinkedEntityChangedEvent(target.Comp.LinkedEntities);
+        RaiseLocalEvent(target, ref ev);
+
+        if (target.Comp.LinkedEntities.Count == 0 && target.Comp.DeleteOnEmptyLinks)
+            QueueDel(target);
+
+        return true;
     }
 
     /// <summary>

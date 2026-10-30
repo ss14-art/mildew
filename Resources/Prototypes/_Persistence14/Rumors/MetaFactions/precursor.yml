@@ -6,6 +6,7 @@
     - DrinkBasicEvil
     - EatBasicEvil
     - PrayBasicEvil
+    - ReceiveMailEvil
   color: Purple
   levels:
     Precursor2: 150
@@ -33,6 +34,7 @@
     - PrecursorCodexFragment
     - Microwave
     - ChemKit
+    - PrecursorDefib
     - HyperzinePen
     - IchorCigarettes
     - PrecursorDecoy
@@ -46,6 +48,7 @@
     - FreedomImplanter
     - PrecursorNoSlips
     - PrecursorHardsuitSyndie
+    - PrecursorMedHardsuitSyndie
   rewardsToOffer: 2
 
 - type: metaFactionLevel

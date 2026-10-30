@@ -6,6 +6,7 @@
     - DrinkBasicFriendly
     - EatBasicFriendly
     - PrayBasicFriendly
+    - ReceiveMailFriendly
   color: Red
   levels:
     Zenith2: 150
@@ -20,6 +21,7 @@
     - ZenithUpgradeModule
     - TradeGood
     - ZenithCodexFragment
+    - SoLMerchCrate
     - GrandLottery
   rewardsToOffer: 2
 
