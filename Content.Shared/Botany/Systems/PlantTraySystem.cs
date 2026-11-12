@@ -164,11 +164,11 @@ public sealed partial class PlantTraySystem : EntitySystem
             if (entry.Quantity.Float() >= 1f)
             {
                 var reagentProto = ProtoMan.Index(entry.Reagent.Prototype);
-                _entityEffects.ApplyEffects(trayUid, [.. reagentProto.PlantMetabolisms], entry.Quantity.Float());
+                _entityEffects.ApplyEffects(trayUid, [.. reagentProto.PlantMetabolisms], entry.Quantity.Float() * 2f);
 
                 if (plantUid != null)
                 {
-                    _entityEffects.ApplyEffects(plantUid.Value, [.. reagentProto.PlantMetabolisms], entry.Quantity.Float());
+                    _entityEffects.ApplyEffects(plantUid.Value, [.. reagentProto.PlantMetabolisms], entry.Quantity.Float() * 2f);
                 }
             }
         }
