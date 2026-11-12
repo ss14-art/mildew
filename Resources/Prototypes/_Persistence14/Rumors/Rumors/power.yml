@@ -23,10 +23,22 @@
 - type: rumor
   id: PowerPrecursor
   name: Энергетические резервы
-  description: "Восстановите питание двух СМЭСов и подстанции, чтобы мы могли получить наши научные данные!"
+  description: "Подайте питание на 2 СМЭСа и подстанцию, чтобы мы могли извлечь наши научные данные!"
   eventGrids:
     - /Maps/Rumors/Charge/syndi-charge.yml
   cashReward: 5000
   reputationReward: 50
   completionType: Power
   descriptionAddon: "Подайте питание на все СМЭСы на борту грида!"
+
+- type: rumor
+  id: PowerGreen
+  name: Power Banks
+  description: "An old piece of an NT station got pulled into your sector, kill the creatures on board and charge the 2 SMESs and the substation, we'll make it worth your while."
+  eventGrids:
+    - /Maps/Rumors/Charge/zed-charge.yml
+  cashReward: 5000
+  reputationReward: 50
+  completionType: Power
+  descriptionAddon: "Power all SMES on board the grid."
+>>>>>>> persi/server-us

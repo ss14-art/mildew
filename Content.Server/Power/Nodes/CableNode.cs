@@ -1,3 +1,4 @@
+using Content.Server._Persistence14.Power.Nodes;
 using Content.Server.NodeContainer.Nodes;
 using Content.Shared.NodeContainer;
 using Robust.Shared.Map.Components;
@@ -51,6 +52,11 @@ namespace Content.Server.Power.Nodes
                     continue;
                 }
                 // Art-end
+                if (node is CableJunctionNode junction)
+                {
+                    if (junction.MatchesAxis(dir))
+                        nodeDirs.Add((dir, node));
+                }
 
                 if (node is CableDeviceNode && dir == Direction.Invalid)
                 {

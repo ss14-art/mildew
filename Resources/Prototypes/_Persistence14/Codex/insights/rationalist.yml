@@ -30,7 +30,6 @@
     - state: flower
   - type: InstantAction
     event: !type:SenseAnomalyEvent
-      range: 3
 
 - type: insightTrait
   id: Rationalist2
