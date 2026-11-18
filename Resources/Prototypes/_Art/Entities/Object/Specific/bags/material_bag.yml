@@ -1,0 +1,23 @@
+- type: entity
+  name: material bag
+  id: MaterialBag
+  parent: OreBag
+  description: A robust bag for salvage specialists and miners alike to carry large amounts of material. Magnetises any nearby materials when attached to a belt.
+  components:
+  - type: Sprite
+    sprite: _Art/Objects/Specific/Engineering/material_bag.rsi
+    state: icon
+  - type: Clothing
+    sprite: _Art/Objects/Specific/Engineering/material_bag.rsi
+    quickEquip: false
+    slots:
+    - belt
+  - type: Storage
+    maxItemSize: Normal
+    grid:
+    - 0,0,9,3
+    quickInsert: true
+    areaInsert: true
+    whitelist:
+      tags:
+        - ConstructionMaterial
